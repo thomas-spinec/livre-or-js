@@ -1,3 +1,10 @@
+<?php
+// class include
+require_once 'class/User.php';
+// instance
+$user = new User();
+?>
+
 <header>
     <div class="container">
         <div class="flex">
@@ -9,46 +16,53 @@
             // test si l'utilisateur est connecté
             if (isset($_GET['deconnexion'])) {
                 if ($_GET['deconnexion'] == true) {
-                    session_unset();
-                    session_destroy();
+                    $user->disconnect();
                     header('Location: index.php');
                 }
-            } else if (isset($_SESSION['login'])) {
-                $user = $_SESSION['login'];
+            } else if ($user->isConnected()) {
+                $login = $user->getLogin();
+            ?>
 
-                echo "<div id='center'>
-                                <h3>Bonjour $user</h3>
-                                <a href='index.php?deconnexion=true'><button>Déconnexion</button></a>
-                            </div>";
+                <div id='center'>
+                    <h3>Bonjour <?= $login ?></h3>
+                    <a href='index.php?deconnexion=true'><button>Déconnexion</button></a>
+                </div>
+                <?php
 
                 if ($user == 'admin') {
                     $_SESSION['admin'] = true;
-                    echo "<nav>
-                                <ul>
-                                    <li><a class='a_head'href='index.php'>Accueil</a></li>
-                                    <li><a class='a_head' href='profil.php'>Profil</a></li>
-                                    <li><a class='a_head' href='livre-or.php'>Livre d'or</a></li>
-                                    <li><a class='a_head' href='admin.php'>Info Utilisateurs</a></li>
-                                </ul>
-                            </nav>";
+                ?>
+                    <nav>
+                        <ul>
+                            <li><a class='a_head' href='index.php'>Accueil</a></li>
+                            <li><a class='a_head' href='profil.php'>Profil</a></li>
+                            <li><a class='a_head' href='livre-or.php'>Livre d'or</a></li>
+                            <li><a class='a_head' href='admin.php'>Info Utilisateurs</a></li>
+                        </ul>
+                    </nav>
+                <?php
                 } else {
-                    echo "<nav>
-                                <ul>
-                                    <li><a class='a_head' href='index.php'>Accueil</a></li>
-                                    <li><a class='a_head' href='profil.php'>Profil</a></li>
-                                    <li><a class='a_head' href='livre-or.php'>Livre d'or</a></li>
-                                </ul>
-                            </nav>";
+                ?>
+                    <nav>
+                        <ul>
+                            <li><a class='a_head' href='index.php'>Accueil</a></li>
+                            <li><a class='a_head' href='profil.php'>Profil</a></li>
+                            <li><a class='a_head' href='livre-or.php'>Livre d'or</a></li>
+                        </ul>
+                    </nav>
+                <?php
                 }
             } else {
-                echo "<div>
-                            <a href='connexion.php'><button>Connexion</button></a>
-                            <a href='inscription.php'><button>Inscription</button></a>
-                            </div>";
-                echo "<div>
-                            <a class='a_head' href='index.php'>Accueil</a>
-                            <a class='a_head' href='livre-or.php'>Livre d'or</a>
-                            </div>";
+                ?>
+                <div>
+                    <a href='user.php?sign=conn'><button>Connexion</button></a>
+                    <a href='user.php?sign=insc'><button>Inscription</button></a>
+                </div>
+                <div>
+                    <a class='a_head' href='index.php'>Accueil</a>
+                    <a class='a_head' href='livre-or.php'>Livre d'or</a>
+                </div>
+            <?php
             }
             ?>
         </div>

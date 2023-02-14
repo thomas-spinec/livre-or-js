@@ -7,8 +7,6 @@ class User
     private $id;
     private $login;
     private $password;
-    private $firstname;
-    private $lastname;
     private $bdd;
 
     /* Constructeur */
@@ -35,6 +33,7 @@ class User
             // On définit le mode d'erreur de PDO sur Exception
             $this->bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //echo "Connexion réussie"; 
+            $this->bdd->exec("set names utf8");
         }
         // si erreur, on capture les exceptions, s'il y en a une on affiche les infos
         catch (PDOException $e) {
@@ -48,60 +47,35 @@ class User
             $this->id = $_SESSION['user']['id'];
             $this->login = $_SESSION['user']['login'];
             $this->password = $_SESSION['user']['password'];
-            $this->firstname = $_SESSION['user']['firstname'];
-            $this->lastname = $_SESSION['user']['lastname'];
         }
     }
 
     /* Méthodes */
     // Enregistrement
-    public function register($login, $password, $password2, $firstname, $lastname)
+    public function register($login, $password)
     {
-        if ($login !== "" && $password !== "" && $password2 !== "" && $firstname !== "" && $lastname !== "") {
-            if (!$this->isUserExist($login)) { // si false --> utilisateur disponible
 
-                // vérification des mots de passe
-                if ($password === $password2) {
-                    // hachage du mot de passe
-                    $password = htmlspecialchars($password);
-                    $password = password_hash($password, PASSWORD_DEFAULT);
+        // htmlspecialchars pour les paramètres
+        $login = htmlspecialchars($login);
+        $password = htmlspecialchars($password);
+        $password = password_hash($password, PASSWORD_DEFAULT);
 
-                    // requête pour ajouter l'utilisateur dans la base de données
-                    $requete2 = "INSERT INTO utilisateurs (login, password, firstname, lastname) VALUES (:login, :password, :firstname, :lastname)";
+        // requête pour ajouter l'utilisateur dans la base de données
+        $requete = "INSERT INTO utilisateurs (login, password) VALUES (:login, :password)";
 
-                    // préparation de la requête
-                    $insert = $this->bdd->prepare($requete2);
+        // préparation de la requête
+        $insert = $this->bdd->prepare($requete);
 
 
-                    // htmlspecialchars pour les paramètres
-                    $login = htmlspecialchars($login);
-                    $firstname = htmlspecialchars($firstname);
-                    $lastname = htmlspecialchars($lastname);
-                    // exécution de la requête avec liaison des paramètres
+        // exécution de la requête avec liaison des paramètres
 
-                    $insert->execute(array(
-                        ':login' => $login,
-                        ':password' => $password,
-                        ':firstname' => $firstname,
-                        ':lastname' => $lastname
-                    ));
+        $insert->execute(array(
+            ':login' => $login,
+            ':password' => $password,
+        ));
 
-                    echo "Inscription réussie"; // inscription réussie
+        echo "ok"; // inscription réussie
 
-                    // redirection vers la page de connexion
-                    header('Refresh: 3; URL="connexion.php"');
-                } else {
-                    $error = "Les mots de passe ne correspondent pas";
-                    return $error; // mots de passe différents
-                }
-            } else {
-                $error = "Utilisateur déjà existant";
-                return $error; // utilisateur déjà existant
-            }
-        } else {
-            $error = "Tous les champs ne sont pas renseignés, il faut le login, le mot de passe, le prénom et le nom";
-            return $error; // utilisateur ou mot de passe vide
-        }
         // fermer la connexion
         $this->bdd = null;
     }
@@ -109,67 +83,41 @@ class User
     // Connexion
     public function connect($login, $password)
     {
-        if (!$this->isConnected()) {
-            if ($login !== "" && $password !== "") {
-                // requête
-                $requete = "SELECT * FROM utilisateurs where login = :login";
 
-                // préparation de la requête
-                $select = $this->bdd->prepare($requete);
+        // requête
+        $requete = "SELECT * FROM utilisateurs where login = :login";
 
-                // htmlspecialchars pour les paramètres
-                $login = htmlspecialchars($login);
-                $password = htmlspecialchars($password);
+        // préparation de la requête
+        $select = $this->bdd->prepare($requete);
 
-                // exécution de la requête avec liaison des paramètres
-                $select->execute(array(':login' => $login));
+        // htmlspecialchars pour les paramètres
+        $login = htmlspecialchars($login);
+        $password = htmlspecialchars($password);
 
-                // récupération du tableau
-                $fetch_all = $select->fetchAll();
+        // récupération du mot de passe avec ASSOC
+        $select->execute(array(':login' => $login));
+        $fetch_assoc = $select->fetch(PDO::FETCH_ASSOC);
+        $password_hash = $fetch_assoc['password'];
 
-                if (count($fetch_all) > 0) { // utilisateur existant
+        if (password_verify($password, $password_hash)) {
+            // récupération des données pour les attribuer aux attributs
+            $this->id = $fetch_assoc['id'];
+            $this->login = $fetch_assoc['login'];
+            $this->password = $fetch_assoc['password'];
 
-                    // récupération du mot de passe avec ASSOC
-                    $select->execute(array(':login' => $login));
-                    $fetch_assoc = $select->fetch(PDO::FETCH_ASSOC);
-                    $password_hash = $fetch_assoc['password'];
-
-                    if (password_verify($password, $password_hash)) {
-                        $error = "Connexion réussie";
-                        // récupération des données pour les attribuer aux attributs
-                        $this->id = $fetch_assoc['id'];
-                        $this->login = $fetch_assoc['login'];
-                        $this->password = $fetch_assoc['password'];
-                        $this->firstname = $fetch_assoc['firstname'];
-                        $this->lastname = $fetch_assoc['lastname'];
-
-                        $_SESSION['user'] = [
-                            'id' => $fetch_assoc['id'],
-                            'login' => $fetch_assoc['login'],
-                            'password' => $fetch_assoc['password'],
-                            'firstname' => $fetch_assoc['firstname'],
-                            'lastname' => $fetch_assoc['lastname']
-                        ];
-                        // connexion réussie
-                        if (!isset($_SESSION['anonyme'])) {
-                            header('Location: index.php');
-                        }
-                    } else {
-                        $error = "Mot de passe incorrect";
-                        return $error; // mot de passe incorrect
-                    }
-                } else {
-                    $error = "Utilisateur inexistant";
-                    return $error; // utilisateur inexistant
-                }
-            } else {
-                $error = "Tous les champs ne sont pas renseignés, il faut le login et le mot de passe";
-                return $error; // utilisateur ou mot de passe vide
-            }
+            $_SESSION['user'] = [
+                'id' => $fetch_assoc['id'],
+                'login' => $fetch_assoc['login'],
+                'password' => $fetch_assoc['password'],
+            ];
+            // connexion réussie
+            $error = "ok";
+            echo $error;
         } else {
-            $error = "Un utilisateur est déjà connecté";
-            return $error; // vous êtes déjà connecté
+            $error = "incorrect";
+            echo $error; // mot de passe incorrect
         }
+
         // fermer la connexion
         $this->bdd = null;
     }
@@ -183,9 +131,6 @@ class User
             $this->id = null;
             $this->login = null;
             $this->password = null;
-            $this->email = null;
-            $this->firstname = null;
-            $this->lastname = null;
 
             // détruire la session
             session_unset();
@@ -220,12 +165,12 @@ class User
     }
 
     // Modification
-    public function update($login, $password, $firstname, $lastname)
+    public function update($login, $password)
     {
         //vérification que la personne est connecté
         if ($this->isConnected()) {
             //vérification que les champs ne sont pas vides
-            if ($login !== "" && $password !== "" && $firstname !== "" && $lastname !== "") {
+            if ($login !== "" && $password !== "") {
 
                 $password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -249,28 +194,22 @@ class User
                     $_SESSION['user'] = [
                         'id' => $this->id,
                         'login' => $login,
-                        'password' => $password,
-                        'firstname' => $firstname,
-                        'lastname' => $lastname
+                        'password' => $password
                     ];
 
                     // requête pour modifier l'utilisateur dans la base de données
-                    $requete2 = "UPDATE utilisateurs SET login = :login, password = :password, firstname = :firstname, lastname = :lastname WHERE id = :id";
+                    $requete2 = "UPDATE utilisateurs SET login = :login, password = :password WHERE id = :id";
                     // préparation de la requête
                     $update = $this->bdd->prepare($requete2);
 
                     // htmlspecialchars pour les paramètres
                     $password = htmlspecialchars($password);
-                    $firstname = htmlspecialchars($firstname);
-                    $lastname = htmlspecialchars($lastname);
 
                     // exécution de la requête avec liaison des paramètres
                     $update->execute(array(
                         ':id' => $this->id,
                         ':login' => $login,
-                        ':password' => $password,
-                        ':firstname' => $firstname,
-                        ':lastname' => $lastname
+                        ':password' => $password
                     ));
 
                     $error = "Modification réussie";
@@ -292,7 +231,7 @@ class User
     // Vérification de la connexion
     public function isConnected()
     {
-        if ($this->id !== null && $this->login !== null && $this->password !== null && $this->firstname !== null && $this->lastname !== null) {
+        if ($this->id !== null && $this->login !== null && $this->password !== null) {
             return true; // utilisateur connecté
         } else {
             return false; // utilisateur non connecté
@@ -310,19 +249,15 @@ class User
                 <thead>
                     <tr>
                         <th>Login</th>
-                        <th>Prénom</th>
-                        <th>Nom</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td><?= $this->login; ?></td>
-                        <td><?= $this->firstname; ?></td>
-                        <td><?= $this->lastname; ?></td>
                     </tr>
                 </tbody>
             </table>
-        <?php
+<?php
         } else {
             echo "Vous n'êtes pas connecté, vous devez être connecté pour voir les informations du compte";
         }
@@ -339,31 +274,7 @@ class User
         }
     }
 
-    // Récupération du prénom
-    public function getFirstname()
-    {
-        //vérification que la personne est connecté
-        if ($this->isConnected()) {
-        ?>
-            <p><strong>Votre prénom est: </strong><?= $this->firstname; ?></p>
-        <?php
-        } else {
-            echo "Vous n'êtes pas connecté, vous devez être connecté pour voir le prénom du compte";
-        }
-    }
 
-    // Récupération du nom
-    public function getLastname()
-    {
-        //vérification que la personne est connecté
-        if ($this->isConnected()) {
-        ?>
-            <p><strong>Votre nom est: </strong><?= $this->lastname; ?></p>
-        <?php
-        } else {
-            echo "Vous n'êtes pas connecté, vous devez être connecté pour voir le nom du compte";
-        }
-    }
 
     // Utilisateur déjà existant?
     public function isUserExist($login)
@@ -384,156 +295,12 @@ class User
         $fetch_all = $select->fetchAll();
 
         if (count($fetch_all) === 0) { // login disponible
-            return false; // login disponible
+            $reponse = "dispo";
+            echo $reponse; // login disponible
         } else {
-            return true; // login indisponible
+            $reponse = "indispo";
+            echo $reponse; // login indisponible
         }
-    }
-
-    // Création utilisateur anonyme
-    public function createAnonyme()
-    {
-        // requête pour créer un utilisateur anonyme
-        $requete = "INSERT INTO utilisateurs (login, password, firstname, lastname) VALUES (:login, :password, :firstname, :lastname)";
-
-        // préparation de la requête
-        $insert = $this->bdd->prepare($requete);
-
-        // hachage du mot de passe
-        $password_A = password_hash('anonyme', PASSWORD_DEFAULT);
-
-        // exécution de la requête avec liaison des paramètres
-        $insert->execute(array(
-            ':login' => 'anonyme',
-            ':password' => $password_A,
-            ':firstname' => 'anonyme',
-            ':lastname' => 'anonyme'
-        ));
-
-        // appel de la fonction de connexion anonyme
-        $this->connectAnonyme();
-    }
-
-    // connexion anonyme
-    public function connectAnonyme()
-    {
-        $login_A = 'anonyme';
-        $password_A = 'anonyme';
-        $_SESSION['anonyme'] = true;
-
-        // connexion
-        $this->connect($login_A, $password_A);
-    }
-
-    // Enregistrement du score
-    public function saveScore()
-    {
-        // requête pour enregistrer le score
-        $requete = "INSERT INTO scores (paires, coups, id_utilisateur) VALUES (:paires, :coups, :id_utilisateur)";
-
-        // préparation de la requête
-        $insert = $this->bdd->prepare($requete);
-
-        // exécution de la requête avec liaison des paramètres
-        $insert->execute(array(
-            ':paires' => $_SESSION['nb_paires'],
-            ':coups' => $_SESSION['tour'],
-            ':id_utilisateur' => $this->id
-        ));
-    }
-
-    // Récupération des scores de l'utilisateur connecté
-    public function getScores()
-    {
-        // requête pour récupérer les scores de l'utilisateur connecté rangé de la plus grande paire à la plus petite
-        $requete = "SELECT * FROM scores where id_utilisateur = :id_utilisateur AND paires = :paires ORDER BY coups DESC";
-
-        // préparation de la requête
-        $select = $this->bdd->prepare($requete);
-
-        // exécution de la requête avec liaison des paramètres
-        $select->execute(array(
-            ':id_utilisateur' => $this->id,
-            ':paires' => $_GET['nb_paires']
-        ));
-
-        // récupération du tableau dans un assoc
-        $fetch_all = $select->fetchAll(PDO::FETCH_ASSOC);
-
-        // affichage
-
-        ?>
-        <table class="infos">
-            <thead>
-                <tr>
-                    <th>Nombre de paires</th>
-                    <th>Score</th>
-                    <th>Nombre de coups</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($fetch_all as $table) {
-                    $score = $table['paires'] / $table['coups'];
-                ?>
-                    <tr>
-                        <td><?= $table['paires']; ?></td>
-                        <td><?= $score ?></td>
-                        <td><?= $table['coups']; ?></td>
-                    </tr>
-                <?php
-                }
-                ?>
-            </tbody>
-        </table>
-    <?php
-
-    }
-
-    // récupération des 10 meilleurs scores en fonction du nombre de paires
-    public function getBestScores()
-    {
-        // requete
-        $requete = "SELECT * FROM scores INNER JOIN utilisateurs ON scores.id_utilisateur = utilisateurs.id WHERE paires = :paires ORDER BY coups LIMIT 10";
-
-        // préparation de la requête
-        $select = $this->bdd->prepare($requete);
-
-        // exécution de la requête avec liaison des paramètres
-        $select->execute(array(':paires' => $_GET['nb_paires']));
-
-        // récupération du tableau dans un assoc
-        $fetch_all = $select->fetchAll(PDO::FETCH_ASSOC);
-
-        // affichage
-
-    ?>
-        <table class="infos">
-            <thead>
-                <tr>
-                    <th>Login</th>
-                    <th>Nombre de paires</th>
-                    <th>Score</th>
-                    <th>Nombre de coups</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($fetch_all as $table) {
-                    $score = $table['paires'] / $table['coups'];
-                ?>
-                    <tr>
-                        <td><?= $table['login']; ?></td>
-                        <td><?= $table['paires']; ?></td>
-                        <td><?= $score ?></td>
-                        <td><?= $table['coups']; ?></td>
-                    </tr>
-                <?php
-                }
-                ?>
-            </tbody>
-        </table>
-<?php
     }
 }
 

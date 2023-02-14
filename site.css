@@ -161,7 +161,7 @@ footer {
 }
 
 .link img {
-  max-width: 100%;
+  max-width: 20vw;
   cursor: pointer;
 }
 
@@ -176,6 +176,10 @@ footer {
   justify-content: space-evenly;
   align-items: center;
   gap: 20%;
+}
+
+#perso img {
+  max-width: 30vw;
 }
 
 /* *****************
