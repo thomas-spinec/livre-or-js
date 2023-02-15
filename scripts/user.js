@@ -71,14 +71,15 @@ document.addEventListener("DOMContentLoaded", function () {
       // verif que le login est disponible
       let dataLogin = new FormData();
       dataLogin.append("verifLogin", loginValue);
-      console.log(dataLogin);
-      fetch("inscription.php", {
+      //   console.log(dataLogin);
+      fetch("verif.php", {
         method: "POST",
         body: dataLogin,
       })
         .then((response) => response.text())
         .then((response) => {
-          console.log(response);
+          response = response.trim();
+          //   console.log(response);
           if (response === "indispo") {
             login_insc.nextElementSibling.innerHTML = "Ce login est déjà pris";
             // change border color and background
@@ -179,14 +180,15 @@ document.addEventListener("DOMContentLoaded", function () {
       // verif que le login est disponible
       let dataLogin = new FormData();
       dataLogin.append("verifLogin", loginValue);
-      console.log(dataLogin);
-      fetch("connexion.php", {
+      //   console.log(dataLogin);
+      fetch("verif.php", {
         method: "POST",
         body: dataLogin,
       })
         .then((response) => response.text())
         .then((response) => {
-          console.log(response);
+          response = response.trim();
+          //   console.log(response);
           if (response === "indispo") {
             login_conn.nextElementSibling.innerHTML = "Login ok";
             // change border color and background
@@ -243,14 +245,15 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     if (validation) {
       let data = new FormData(form_insc);
-      data.append("send", "ok");
-      fetch("inscription.php", {
+      data.append("insc", "ok");
+      fetch("verif.php", {
         method: "POST",
         body: data,
       })
         .then((response) => response.text())
         .then((response) => {
-          console.log(response);
+          response = response.trim();
+          //   console.log(response);
           if (response === "ok") {
             displayConn();
           }
@@ -271,14 +274,15 @@ document.addEventListener("DOMContentLoaded", function () {
     e.preventDefault();
     if (validation) {
       let data = new FormData(form_conn);
-      data.append("send", "ok");
-      fetch("connexion.php", {
+      data.append("conn", "ok");
+      fetch("verif.php", {
         method: "POST",
         body: data,
       })
         .then((response) => response.text())
         .then((response) => {
-          console.log(response);
+          response = response.trim();
+          //   console.log(response);
           if (response === "ok") {
             // msg de connexion puis redirection
             btnConn.nextElementSibling.innerHTML =
