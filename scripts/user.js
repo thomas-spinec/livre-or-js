@@ -2,21 +2,24 @@
 document.addEventListener("DOMContentLoaded", function () {
   // création des variables
   // récupération pour l'inscription
-  let section_insc = document.querySelector("#inscription");
+  const section_insc = document.querySelector("#inscription");
   let form_insc = section_insc.querySelector("form");
   let login_insc = form_insc.querySelector(".login");
   let password_insc = form_insc.querySelector(".password");
   let password2 = form_insc.querySelector("#password2");
-  let btnInsc = document.querySelector("#btnInsc");
-  let validation = false;
+  const btnInsc = document.querySelector("#btnInsc");
+  const switchConn = document.querySelector("#switchConn");
 
   // récupération pour la connexion
-  let section_conn = document.querySelector("#connexion");
+  const section_conn = document.querySelector("#connexion");
   let form_conn = section_conn.querySelector("form");
   let login_conn = form_conn.querySelector(".login");
   let password_conn = form_conn.querySelector(".password");
-  let btnConn = document.querySelector("#btnConn");
+  const btnConn = document.querySelector("#btnConn");
+  const switchInsc = document.querySelector("#switchInsc");
 
+  // autres
+  let validation = false;
   // récupération de l'url dans une string
   let str = window.location.href;
   let url = new URL(str);
@@ -49,6 +52,29 @@ document.addEventListener("DOMContentLoaded", function () {
   else {
     displayInsc();
   }
+
+  // fonction du switch de formulaire
+  // switch vers la connexion
+  $(switchConn).click(function () {
+    // modification du title
+    document.title = "Connexion";
+    // animation
+    $(section_insc).hide(1000);
+    setTimeout(function () {
+      $(section_conn).show(1000);
+    }, 500);
+  });
+  // switch vers l'inscription
+  $(switchInsc).click(function () {
+    // modification du title
+    document.title = "Inscription";
+    // animation
+    $(section_conn).hide(1000);
+    setTimeout(function () {
+      $(section_insc).show(1000);
+    }, 500);
+  });
+
   //////////////////////////////////////////////////
   // Function for inscription                ///////
   //////////////////////////////////////////////////

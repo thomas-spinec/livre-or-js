@@ -20,7 +20,7 @@
     // instance
     $user = new User();
     session_start();
-    require_once 'includes/header.php';
+    require_once 'includes/headerConn.php';
     ?>
     <!-- /Header -->
 
@@ -39,7 +39,7 @@
                 <p></p>
                 <input type="submit" value="S'inscrire" name="send" id="btnInsc">
             </form>
-            <button>Connexion</button>
+            <button id="switchConn">Connexion</button>
         </section>
 
         <section id="connexion">
@@ -53,7 +53,7 @@
                 <input type="submit" value="Se connecter" id="btnConn">
                 <p></p>
             </form>
-            <button>Inscription</button>
+            <button id="switchInsc">Inscription</button>
         </section>
 
     </main>
