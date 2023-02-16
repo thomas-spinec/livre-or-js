@@ -50,6 +50,17 @@ class User
         }
     }
 
+    /* Getter */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getLogin()
+    {
+        return $this->login;
+    }
+
     /* Méthodes */
     // Enregistrement
     public function register($login, $password)
@@ -303,17 +314,6 @@ class User
 <?php
         } else {
             echo "Vous n'êtes pas connecté, vous devez être connecté pour voir les informations du compte";
-        }
-    }
-
-    // Récupération du login
-    public function getLogin()
-    {
-        //vérification que la personne est connecté
-        if ($this->isConnected()) {
-            return $this->login;
-        } else {
-            echo "Vous n'êtes pas connecté, vous devez être connecté pour voir le login du compte";
         }
     }
 

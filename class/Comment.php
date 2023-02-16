@@ -49,11 +49,16 @@ class Comment
         // préparation de la requête
         $insert = $this->bdd->prepare($requete);
 
+        // special character
+        $commentaire = htmlspecialchars($commentaire);
+
         // exécution de la requête avec liaison des paramètres
         $insert->execute(array(
             'commentaire' => $commentaire,
             'idUser' => $idUser
         ));
+
+        echo "ok";
     }
 
     // affichage des commentaires
