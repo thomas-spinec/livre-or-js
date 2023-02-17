@@ -29,21 +29,22 @@
 
     <!-- Main -->
     <main>
-        <section id="commentaire">
-            <h1>Laisser un commentaire</h1>
-            <form action="" method="post" id="formCom">
-                <div class="center">
-                    <label for="commentaire">Commentaire</label>
-                    <textarea name="commentaire" id="comment" cols="30" rows="10" required></textarea>
-                    <p></p>
-                </div>
-                <br>
-                <div class="center">
-                    <input type="submit" value="Envoyer" id="com">
-                    <p></p>
-                </div>
-            </form>
-        </section>
+        <section id="commentaire" class="container">
+            <section class="background_form">
+                <h1>Laisser un commentaire</h1>
+                <form action="" method="post" id="formCom">
+                    <div class="center">
+                        <label for="commentaire">Commentaire</label>
+                        <textarea name="commentaire" id="comment" cols="60" rows="10" required></textarea>
+                        <p></p>
+                    </div>
+                    <br>
+                    <div class="center">
+                        <input type="submit" value="Envoyer" id="com">
+                        <p></p>
+                    </div>
+                </form>
+            </section>
     </main>
     <!-- /Main -->
 

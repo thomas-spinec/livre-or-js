@@ -30,13 +30,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // affichage de la section connexion
   function displayConn() {
     section_insc.style.display = "none";
-    section_conn.style.display = "block";
+    section_conn.style.display = "flex";
     // modification du title
     document.title = "Connexion";
   }
   // affichage de la section inscription
   function displayInsc() {
-    section_insc.style.display = "block";
+    section_insc.style.display = "flex";
     section_conn.style.display = "none";
     // modification du title
     document.title = "Inscription";
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
       login_insc.nextElementSibling.innerHTML = "Veuillez rentrer un login";
       // change border color and background
       login_insc.style.borderColor = "red";
-      login_insc.style.backgroundColor = "#ff000063";
+      login_insc.style.backgroundColor = "#ff000033";
 
       validation = false;
     } else {
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
             login_insc.nextElementSibling.innerHTML = "Ce login est déjà pris";
             // change border color and background
             login_insc.style.borderColor = "red";
-            login_insc.style.backgroundColor = "#ff000063";
+            login_insc.style.backgroundColor = "#ff000033";
 
             validation = false;
           } else if (response === "dispo") {
@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Veuillez rentrer un mot de passe";
       // change border color and background
       password_insc.style.borderColor = "red";
-      password_insc.style.backgroundColor = "#ff000063";
+      password_insc.style.backgroundColor = "#ff000033";
       validation = false;
     } else {
       password_insc.nextElementSibling.innerHTML = "";
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Veuillez confirmer votre mot de passe";
       // change border color and background
       password2.style.borderColor = "red";
-      password2.style.backgroundColor = "#ff000063";
+      password2.style.backgroundColor = "#ff000033";
       validation = false;
     } else {
       password2.nextElementSibling.innerHTML = "";
@@ -178,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
           "Les mots de passe ne correspondent pas";
         // change border color and background
         password2.style.borderColor = "red";
-        password2.style.backgroundColor = "#ff000063";
+        password2.style.backgroundColor = "#ff000033";
         validation = false;
       }
     }
@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function () {
       login_conn.nextElementSibling.innerHTML = "Veuillez rentrer un login";
       // change border color and background
       login_conn.style.borderColor = "red";
-      login_conn.style.backgroundColor = "#ff000063";
+      login_conn.style.backgroundColor = "#ff000033";
 
       validation = false;
     } else {
@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
             login_conn.nextElementSibling.innerHTML = "Ce login n'existe pas";
             // change border color and background
             login_conn.style.borderColor = "red";
-            login_conn.style.backgroundColor = "#ff000063";
+            login_conn.style.backgroundColor = "#ff000033";
 
             validation = false;
           }
@@ -246,7 +246,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "Veuillez rentrer un mot de passe";
       // change border color and background
       password_conn.style.borderColor = "red";
-      password_conn.style.backgroundColor = "#ff000063";
+      password_conn.style.backgroundColor = "#ff000033";
       validation = false;
     } else {
       password_conn.nextElementSibling.innerHTML = "";
@@ -322,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
               "Mot de passe incorrect";
             // change border color and background
             password_conn.style.borderColor = "red";
-            password_conn.style.backgroundColor = "#ff000063";
+            password_conn.style.backgroundColor = "#ff000033";
           }
         })
         .catch((error) => console.log(error));

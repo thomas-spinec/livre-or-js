@@ -1,6 +1,6 @@
     <footer>
         <section class="centrage flex_footer">
-            <div id="perso" class="logo">
+            <div id="perso">
                 <a class="link" href="https://thomas-spinec.students-laplateforme.io/"><img src="img/Logo.png" alt="lien vers mon portfolio"></a>
             </div>
             <div class="logo">

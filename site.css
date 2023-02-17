@@ -3,12 +3,13 @@
 ***************** */
 
 body {
-  background-color: #dff6ff;
+  background-color: #333;
   /* font-family: "Open Sans", sans-serif; */
   /* font-size: 16px;
     color: #333; */
   margin: 0;
   padding: 0;
+  font-size: 20px;
 }
 
 a {
@@ -17,31 +18,44 @@ a {
 }
 
 h1 {
-  font-size: 30px;
+  font-size: 2em;
   font-weight: bold;
   text-align: center;
-  color: #333;
+  /* color: #333; */
 }
 
 h2 {
-  font-size: 24px;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
 h3 {
-  font-size: 24px;
+  font-size: 1.3em;
   font-weight: bold;
   line-height: 1;
 }
 
 h4 {
-  font-size: 18px;
+  font-size: 1em;
+}
+
+p {
+  font-size: 1em;
 }
 
 .container {
   width: 80%;
-  margin: auto;
-  padding: auto;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.centrage_main {
+  text-align: center;
+  width: 90%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .centrage {
@@ -55,21 +69,21 @@ h4 {
 *************** */
 
 header {
-  /* display: block; */
-  background-color: #47b5ff;
-  color: #fff;
-  position: fixed;
+  display: block;
+  background-color: #fafafa;
+  color: #333;
+  /* position: fixed; */
   width: 100%;
-  min-height: 110px;
-  max-height: 140px;
   top: 0;
+  clear: both;
 }
 
 .flex {
   text-align: center;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
+  align-content: center;
 }
 
 #center {
@@ -95,10 +109,10 @@ header li {
 }
 
 header button {
-  background-color: #dff6ff;
+  background-color: #7d7d7d;
   border: 1px solid #7d7d7d9a;
   border-radius: 15px;
-  color: #333;
+  color: #fafafa;
   font-size: 20px;
   /* font-weight: bold; */
   padding: 10px;
@@ -111,11 +125,11 @@ header button {
 }
 
 header button:hover {
-  background-color: #88dfff;
+  background-color: #a6a6a6;
 }
 
 .a_head {
-  color: #fff;
+  color: #333;
   transition: 0.5s;
   padding: 10px 15px;
   margin: 0px 10px;
@@ -123,9 +137,73 @@ header button:hover {
 }
 
 .a_head:hover {
-  background-color: #88dfff;
+  background-color: #7d7d7d9a;
   border-radius: 15px;
   padding: 10px 15px;
+}
+
+.mobile {
+  display: none;
+}
+
+.openBtn {
+  display: none;
+}
+
+/* Media pour menu burger */
+@media (max-width: 970px) {
+  .ordi {
+    display: none;
+  }
+
+  .mobile {
+    display: block;
+    width: 70%;
+    height: auto;
+    position: fixed;
+    left: 15%;
+    z-index: 1;
+    padding: 0 5%;
+    background-color: #fafafa;
+    /* background-color: #1dc439; */
+
+    transition: transform 0.6s ease-in-out;
+    -webkit-transition: transform 0.6s ease-in-out;
+    transform: translateX(100%);
+    -webkit-transform: translateX(110%);
+  }
+
+  .mobile.open {
+    transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+    display: block;
+  }
+
+  .mobile ul {
+    position: absolute;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    top: 0%;
+    background-color: #fafafa;
+    /* background-color: #1dc439; */
+    color: #333;
+  }
+
+  .burger-icon span {
+    display: block;
+    width: 35px;
+    height: 5px;
+    background-color: black;
+    margin: 6px 0;
+  }
+
+  #openBtn {
+    display: block;
+    width: 35px;
+    height: 30px;
+    margin: 6px 0;
+  }
 }
 
 /* *****************
@@ -133,8 +211,8 @@ header button:hover {
 ****************** */
 
 footer {
-  background-color: #1363df;
-  color: #fafafa;
+  background-color: #fafafa;
+  color: #333;
   text-align: center;
   padding: 10px;
   padding-bottom: 1%;
@@ -161,13 +239,13 @@ footer {
 }
 
 .link img {
-  max-width: 20vw;
+  max-width: 10vw;
   cursor: pointer;
 }
 
 .link:hover {
   transform: translateY(-10%);
-  box-shadow: 0 10px 20px #88dfff;
+  box-shadow: 0 10px 20px #fafafa;
 }
 
 #perso {
@@ -179,7 +257,7 @@ footer {
 }
 
 #perso img {
-  max-width: 30vw;
+  max-width: 20vw;
 }
 
 /* *****************
@@ -187,14 +265,15 @@ footer {
 ****************** */
 
 main {
-  margin-top: 150px;
-  min-height: 65vh;
+  display: block;
+  min-height: 92vh;
   margin-bottom: 3%;
+  color: #fafafa;
 }
 
 main button {
-  background-color: #88dfff;
-  border: 1px solid #1363df66;
+  background-color: #fafafa;
+  border: 1px solid #c2c2c2c6;
   border-radius: 15px;
   color: #333;
   font-size: 20px;
@@ -208,7 +287,7 @@ main button {
 }
 
 main button:hover {
-  background-color: #c6eefd;
+  background-color: #a6a6a6;
 }
 
 .center {
@@ -222,17 +301,29 @@ main button:hover {
   font-size: 20px;
 }
 
+/* ********************
+    Main - Accueil
+********************* */
+#intro {
+  margin-top: 5%;
+}
+
+#goal {
+  margin-top: 5%;
+}
+
 /* *****************
     Formulaires
 ****************** */
 
 .background_form {
-  width: 60%;
-  margin: auto;
+  /* width: 50%; */
+  /* margin: auto; */
   padding: 20px;
   background-color: #fafafa;
   border-radius: 10px;
   box-shadow: 0 0 10px #7d7d7d;
+  color: #333;
 }
 
 .background_form p {
@@ -269,11 +360,54 @@ form input[type="submit"] {
   margin-right: 10px;
   margin-left: 10px;
   transition: 0.5s;
+  border-radius: 15px;
   cursor: pointer;
 }
 
 form input[type="submit"]:hover {
   background-color: #88dfff;
+}
+
+/* Partie Inscription */
+#inscription {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#inscription section {
+  flex-basis: 40%;
+}
+
+#inscription form input {
+  width: 60%;
+  margin: auto;
+}
+
+#inscription form input[type="submit"] {
+  width: 30%;
+}
+
+/* Partie Connexion */
+#connexion {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#connexion section {
+  flex-basis: 40%;
+}
+
+#connexion form input {
+  width: 60%;
+  margin: auto;
+}
+
+#connexion form input[type="submit"] {
+  width: 30%;
 }
 
 /* *****************
@@ -319,6 +453,11 @@ table {
     livre d'or
 ****************** */
 
+#livre-or h1,
+#leaveComment p {
+  color: #fafafa;
+}
+
 .commentaires tbody,
 .commentaires thead {
   display: block;
@@ -337,6 +476,7 @@ table {
   background-color: #fafafa;
   /* border-radius: 15px; */
   box-shadow: 0 0 10px #7d7d7d;
+  color: #333;
 }
 
 .commentaires th {
@@ -349,7 +489,8 @@ table {
 
 .commentaires td {
   padding: 20px;
-  border-bottom: #1363df;
+  /* border-bottom: #1363df; */
+  border-bottom: #ff000033;
   border-bottom-style: solid;
   border-bottom-width: 1px;
   border-left: none;
@@ -366,4 +507,12 @@ table {
 
 .comm {
   width: 70%;
+}
+
+/* **************************
+    page commentaire
+*************************** */
+
+#commentaire {
+  width: 50%;
 }
