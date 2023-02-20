@@ -419,6 +419,52 @@ form input[type="submit"]:hover {
   color: #333;
 }
 
+/* partie login */
+#login {
+  width: 50%;
+  margin: auto;
+  margin-bottom: 3%;
+}
+
+#login form {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#login form input {
+  width: 60%;
+  margin: auto;
+}
+
+#login form input[type="submit"] {
+  width: 30%;
+}
+
+/* partie password */
+
+#password {
+  width: 50%;
+  margin: auto;
+}
+
+#password form {
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+#password form input {
+  width: 60%;
+  margin: auto;
+}
+
+#password form input[type="submit"] {
+  width: 30%;
+}
+
 /* *****************
     page admin
 ****************** */
