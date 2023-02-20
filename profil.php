@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="site.css">
     <link rel="icon" type="images/png" sizes="64x64" href="img/Logo_onglet.png" />
     <script src="scripts/profil.js"></script>
+    <script src="scripts/menu.js"></script>
+
 </head>
 
 <body>
